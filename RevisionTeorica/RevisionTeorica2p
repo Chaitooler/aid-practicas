@@ -1,0 +1,65 @@
+a UNa hipotesis estadistica es:
+4- al estadistico no se lo asigna provisionalmente, al parametro.. F
+
+b Un test de hipotesis estadistico es:
+2- Una afirmacion acerca de la poblacion
+
+Test definicion: Una funcion que define una regla de decision en base a un estadistico, que rechace o no, una hipotesis.
+c La region critica es:
+
+3 casi- Una region del espacio parametrico tal que si el ESTADISTICO pertenece a ella se rechaza la hipotesis nula
+Espacio parametrico: COnjunto de valores que puede tomar un parametro
+
+d- La hipotesis nula del analisis de la vrianza afirma:
+2 No existen diferencias entre las medias de las poblaciones.
+
+e- La hipotesis nula del test de Levene establece
+1 y 3 correctas
+
+f- El rechazo de la hipotesis nula del test de Kruskal WAllis indica (Generalizacion del test de wilcocson):
+(Analisis de la varianza no parametrica)
+(Solo puedo decir que las medianas son distitnas cuando las distribuciones sean parecidas)
+(Friedman : varianza por bloques, sacando el sentimiento de cada encuestado)
+(Test cuestiones de orden: John Khese Tepstra)
+2 - Medianas (Escapo de las medias porque estan distorcionadas)
+
+g- El analisis de clusters tiene por objetivo seleccionar grupos que:
+4. Minimicen la varianza dentro del grupo y maximicen la varianza entre grupos
+
+h- Los conglomerados elegidos por el metodo dependen de:
+Tods son correctas
+
+i- Para medir... discriminante de un metodo:
+(Podes detectar outliers con los coeficientes de la funcion discriminante)
+
+j- Lod supuestos del analisis de discriminante cuadratrico de fisher son:
+4- Ninguna, Normalidad + Independencia
+
+
+VoF:
+a V (obs: se traspone la matriz y se clusteriza) 
+b V (Es sensible a la falta de normalidad, puede rechazar por eso, pero no esta mal lo que dice ahi) 
+c Mas o menos: No esta mal pero le falta decir un par de cosas (Grados de libertad) y no especifica si es parametrico o no.
+d F (Esta proyectado, entonces se toma la distancia entre los centroides. Centroide es la proyeccion sobre la dimension discrimiannte) 
+e F (Para que voy a hacer discriminante si los vectores son iguales) 
+f F (Puede no cumplir la desigualdad triangular)
+g F (T de Student es Hooteling, Wishart es Chi2)
+h F (Si el coeficiente es alto (estandarizadas) quiere decir que si discrimina)
+i V (Es una propiedad de la normal)
+j V 
+
+Preguntas:
+a- Cuando es adecuado el analisis de perfiles?
+
+b- Como se clasifica una nueva observacion cuando en el analisis discriminante hay ma sde dos grupos
+Distancia de mahalanobis. O P(X) de pertenencia. TAmbien puedo usar costos a los errores y muevo esos limites.
+
+c- Que ventaja tiene el metodo de probabilidades a posteriori para el analisis discriminante?
+Permite evaluar la confianza.
+
+d- Establezca al menos dos diferencias importantes entre el analisis discriminante y el analisis de clusteriza
+Discriminante es supervisado y clustering no. AD requiere supuesto de normalidad. En AD conozco la cantidad de grupos. Ninguna de las dos es robusta a outliers
+
+e- Explique la diferencia entre segmentacion jerarquica y no jerarquica, seniale caracteristicas de metodos divisivos y aglomerativos
+En la jerarquica se empieza y termina con cada cluster. Jerarquica > Veo toda la forma que se va armarndo, y puedo cortar partes y decidir, si tengo un dataset manejable, en un endograma no veo normalidad
+Kamins (no jerarquico) es rapido es mejor en variables continuas. 
