@@ -29,6 +29,7 @@ library(reshape2)
 library(knitr)
 library(heplots)
 library(factoextra)
+library(klaR) 
 
 city = read_excel("C:/Users/chait/Desktop/Facultad/aid-practicas/RevisionPractica/city.xlsx")
 cancer = read_excel("C:/Users/chait/Desktop/Facultad/aid-practicas/RevisionPractica/cancer.xls")
@@ -169,39 +170,69 @@ t.test(x = can.dat$Chrom[can.dat$Class == 0], y = can.dat$Chrom[can.dat$Class ==
 #Saco IDS
 cancerdf = cancerdf[, -1]
 
+pairs(x = cancerdf[, c("Adhes", "BNucl", "Chrom", "Epith", "Mitos", "NNucl","Thick", "UShap", "USize")], col = c("firebrick", "green3")[cancerdf$Class], pch = 19)
+
+
 
 fit = hotelling.test( .~ Class,  data=cancerdf)
 fit
+cancerdf.clean = cancerdf[,c(-1)]
 
-mshapiro.test(t(cancerdf[,-1]))
-boxM(data = cancerdf[,-1], grouping=cancerdf[,1])
+## Normalidad multivariada - Rechaza
+mshapiro.test(t(cancerdf.clean[,-1]))
 
-cancer.lda <- lda(Class~Adhes+BNucl+Chrom+Epith+NNucl+Mitos+UShap+USize,cancerdf)
+## Igualdad de matrices de var y cov - Rechaza
+boxM(data = cancerdf.clean[-1], grouping=cancerdf.clean[,1])
+
+###############################################################
+## LDA
+###############################################################
+
+cancer.lda <- lda(Class~Adhes+BNucl+Chrom+Epith+NNucl+Mitos+UShap+USize,cancerdf[,-1])
 cancer.lda
-
-#####
 
 datos_tidy <- melt(cancerdf[,-1], value.name="valor")
 kable(datos_tidy %>% group_by(variable) %>% summarise(p_value_Shapiro.test=shapiro.test(valor)$p.value))
-#####
 
 
-### Tasa de error ingenua
+##Visualizacion
+partimat(Class~Adhes+BNucl+Chrom+Epith+NNucl+Mitos+UShap+USize, data = cancerdf.clean, method = "lda", prec = 200,image.colors = c("darkgoldenrod1", "snow2", "skyblue2","green","red","yellow","pink"), col.mean = "firebrick")
 
+### Tasa de error ingenua (LDA)
+predicciones <- predict(object = cancer.lda, newdata = cancerdf.clean[, -1]) 
+table(cancerdf.clean$Class, predicciones$class, dnn = c("Clase real", "Clase predicha"))
+trainig_error <- mean(cancerdf.clean$Class != predicciones$class) * 100
+trainig_error
+
+###############################################################
+## QDA (Bueno cuando no se cumple Homocedasticidad)
+###############################################################
+
+cancer.qda <- qda(Class~Adhes+BNucl+Chrom+Epith+NNucl+Mitos+UShap+USize, data = cancerdf.clean)
+cancer.qda
+
+## ERROR INGENUO (QDA)
+prediccionesq <- predict(object = cancer.qda, newdata = cancerdf.clean[, -1]) 
+table(cancerdf.clean$Class, prediccionesq$class, dnn = c("Clase real", "Clase predicha"))
+trainig_error <- mean(cancerdf.clean$Class != prediccionesq$class) * 100
+trainig_error
+
+###############################################################
+## Cross Validation y Heldout
+###############################################################
 
 
 ## TEST BOX M para varianzas y covarianzas, no lo piden pero bueno
+#boxM(Y = data[,2],data=cancerdf[,-1 -2], grouping = cancerdf[, 2])
 
-boxM(Y = data[,2],data=cancerdf[,-1 -2], grouping = cancerdf[, 2])
-
-
-
-
-
-
+###############################################################
 ############## CLUSTERING #############
-
+###############################################################
 View(city)
+
+###############################################################
+## JERARQUICO
+###############################################################
 
 mat_dist = dist(city[, -1], method='euclidean')
 mat_dist
@@ -236,8 +267,9 @@ fviz_cluster(object = list(data = city[,-1], cluster = cutree(hc_completo, k = 5
   theme_bw()
 
 
-####
+###############################################################
 ## K MEANS
+###############################################################
 
 ##Optimal clusters
 rownames(datos2) <- datos2[,1] ## no se como hacer esto
