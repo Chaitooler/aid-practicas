@@ -1,0 +1,4 @@
+Ejercicio 1.
+
+Calculo la matriz de distancias euclideanas para visualizar los datos.
+Con la misma calculo las correlaciones con los 4 metodos de cluster jerarquico (complete, average, ward, single). Todas me dan en razon de (0.90,0.93). Elijo Average por 0.9278
